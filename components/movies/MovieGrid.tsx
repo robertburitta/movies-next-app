@@ -20,6 +20,6 @@ export const MovieGrid = () => {
 			<Button variant='contained' sx={{ margin: '20px auto 0' }} onClick={handleLoadMore} disabled={loadMorePending}>
 				{loadMorePending ? <CircularProgress color='inherit' size={25} /> : 'Load more...'}
 			</Button>
-		</Grid >
+		</Grid>
 	);
 };

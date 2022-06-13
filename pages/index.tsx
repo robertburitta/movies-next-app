@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
+import { PageWithLayout } from '../types/PageWithLayout';
 import { getBaseLayout } from '../layout/BaseLayout';
 import { useMovies } from '../hooks/useMovies';
 import { MovieGrid } from '../components/movies/MovieGrid';
-import { PageWithLayout } from '../types/PageWithLayout';
 import { CircularProgress } from '@mui/material';
 
 export const Home: PageWithLayout = () => {

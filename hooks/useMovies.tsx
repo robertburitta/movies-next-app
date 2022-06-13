@@ -20,6 +20,7 @@ export const useMovies = () => {
 			const movies = await fetchMediaList(limit, currentPage) as MovieType[];
 
 			dispatch(moviesActions.saveMovies(movies));
+
 			setGetMoviesPending(false);
 			setIsError(false);
 		} catch (err) {
@@ -37,6 +38,7 @@ export const useMovies = () => {
 
 			dispatch(moviesActions.loadMoreMovies(moreMovies));
 			dispatch(moviesActions.setCurrentPage(currentPage + 1));
+
 			setLoadMorePending(false);
 			setIsError(false);
 		} catch (err) {
