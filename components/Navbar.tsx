@@ -8,7 +8,7 @@ export const Navbar = () => {
 		<AppBar position='relative'>
 			<Container maxWidth='xl'>
 				<Toolbar disableGutters>
-					<Typography variant='h5'>Movie App</Typography>
+					<Typography variant='h6'>Movie App</Typography>
 					<Link href={Routes.HOME}>Home</Link>
 					<Link href={Routes.SEARCH}>Search</Link>
 				</Toolbar>

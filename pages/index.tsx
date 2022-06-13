@@ -1,17 +1,12 @@
 import React, { useEffect } from 'react';
 import { getBaseLayout } from '../layout/BaseLayout';
 import { useMovies } from '../hooks/useMovies';
-import { fetchMediaList, MediaList } from './api/api';
 import { MovieGrid } from '../components/movies/MovieGrid';
-import { GetStaticProps } from 'next';
 import { PageWithLayout } from '../types/PageWithLayout';
+import { CircularProgress } from '@mui/material';
 
-interface HomeProps {
-	movies: MediaList[];
-}
-
-export const Home: PageWithLayout<HomeProps> = ({ movies }) => {
-	const { isPending, getMovies } = useMovies();
+export const Home: PageWithLayout = () => {
+	const { getMoviesPending, getMovies } = useMovies();
 
 	useEffect(() => {
 		getMovies();
@@ -19,19 +14,13 @@ export const Home: PageWithLayout<HomeProps> = ({ movies }) => {
 
 	return (
 		<React.Fragment>
-			<MovieGrid movies={movies} isPending={isPending} />
+			{getMoviesPending ?
+				<CircularProgress sx={{ display: 'block', margin: '20px auto 0' }} />
+				:
+				<MovieGrid />
+			}
 		</React.Fragment>
 	);
-};
-
-export const getStaticProps: GetStaticProps = async () => {
-	const movies = await fetchMediaList(10, 1);
-
-	return {
-		props: {
-			movies: movies as MediaList[]
-		}
-	};
 };
 
 Home.getLayout = getBaseLayout;

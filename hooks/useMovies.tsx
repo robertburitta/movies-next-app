@@ -1,32 +1,56 @@
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { fetchMediaList } from '../pages/api/api';
+import { RootState } from '../store';
 import { moviesActions } from '../store/moviesSlice';
+import { MovieType } from '../types/MovieType';
 
 export const useMovies = () => {
 	const dispatch = useDispatch();
-	const [isPending, setIsPending] = useState(false);
+	const { currentPage, limit } = useSelector((state: RootState) => state.movies);
+	const [getMoviesPending, setGetMoviesPending] = useState(false);
+	const [loadMorePending, setLoadMorePending] = useState(false);
+	const [fetchedAllMovies, setFetchedAllMovies] = useState(false);
 	const [isError, setIsError] = useState(false);
 
-	const getMovies = async (limit: number = 10, page: number = 1) => {
-		setIsPending(true);
+	const getMovies = async () => {
+		setGetMoviesPending(true);
 
 		try {
-			const movies = await fetchMediaList(limit, page);
+			const movies = await fetchMediaList(limit, currentPage) as MovieType[];
 
 			dispatch(moviesActions.saveMovies(movies));
-			setIsPending(false);
+			setGetMoviesPending(false);
 			setIsError(false);
 		} catch (err) {
-			console.error('Network error');
-			setIsPending(false);
+			console.error(err);
+			setGetMoviesPending(false);
+			setIsError(true);
+		}
+	};
+
+	const handleLoadMore = async () => {
+		setLoadMorePending(true);
+
+		try {
+			const moreMovies = await fetchMediaList(limit, currentPage + 1) as MovieType[];
+
+			dispatch(moviesActions.loadMoreMovies(moreMovies));
+			dispatch(moviesActions.setCurrentPage(currentPage + 1));
+			setLoadMorePending(false);
+			setIsError(false);
+		} catch (err) {
+			console.log(err);
+			setLoadMorePending(false);
 			setIsError(true);
 		}
 	};
 
 	return {
-		isPending,
 		isError,
-		getMovies
+		getMoviesPending,
+		getMovies,
+		loadMorePending,
+		handleLoadMore
 	};
 };
