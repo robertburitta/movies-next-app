@@ -5,6 +5,7 @@ interface InitialStateType {
 	movies: MovieType[];
 	currentPage: number;
 	limit: number;
+	favourites: number[];
 }
 
 export const moviesSlice = createSlice({
@@ -12,7 +13,8 @@ export const moviesSlice = createSlice({
 	initialState: {
 		movies: [],
 		currentPage: 1,
-		limit: 10
+		limit: 10,
+		favourites: []
 	},
 	reducers: {
 		saveMovies(state: InitialStateType, action: PayloadAction<MovieType[]>) {
@@ -23,14 +25,14 @@ export const moviesSlice = createSlice({
 			state.movies = [...state.movies, ...action.payload];
 			state.movies.sort((a, b) => a.title > b.title ? 1 : -1);
 		},
-		setFavourite(state: InitialStateType, action: PayloadAction<MovieType>) {
-			if (action.payload.favourite) {
-				console.log(1);
+		updateFavourites(state: InitialStateType, action: PayloadAction<MovieType>) {
+			if (state.favourites.indexOf(action.payload.id) !== -1) {
+				state.favourites.splice(state.favourites.indexOf(action.payload.id), 1);
 			} else {
-				state.movies.sort((a, b) => a.id === action.payload.id ? -1 : 1);
+				state.movies.sort((a) => a.id === action.payload.id ? -1 : 1);
+				state.favourites.push(action.payload.id);
 			}
-
-			state.movies.map((movie) => movie.id === action.payload.id ? movie.favourite = !movie.favourite : movie);
+			console.log(action.payload, current(state.favourites));
 		},
 		setCurrentPage(state: InitialStateType, action: PayloadAction<number>) {
 			state.currentPage = action.payload;

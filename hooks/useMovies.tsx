@@ -10,7 +10,6 @@ export const useMovies = () => {
 	const { currentPage, limit } = useSelector((state: RootState) => state.movies);
 	const [getMoviesPending, setGetMoviesPending] = useState(false);
 	const [loadMorePending, setLoadMorePending] = useState(false);
-	const [fetchedAllMovies, setFetchedAllMovies] = useState(false);
 	const [isError, setIsError] = useState(false);
 
 	const getMovies = async () => {

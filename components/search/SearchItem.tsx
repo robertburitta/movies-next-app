@@ -1,17 +1,15 @@
 import React, { useState } from 'react';
 import { MovieType } from '../../types/MovieType';
-import { Card, CardActions, CardContent, CardMedia, Divider, IconButton, Typography, useMediaQuery } from '@mui/material';
+import { Card, CardActions, CardContent, CardMedia, Divider, Typography, useMediaQuery } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import { useDispatch, useSelector } from 'react-redux';
-import { moviesActions } from '../../store/moviesSlice';
+import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 
-interface MovieCardProps {
+interface SearchItemProps {
 	movie: MovieType;
 }
 
-export const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
-	const dispatch = useDispatch();
+export const SearchItem: React.FC<SearchItemProps> = ({ movie }) => {
 	const matches = useMediaQuery('(min-width:600px)');
 	const favourites: number[] = useSelector((state: RootState) => state.movies.favourites);
 	const [errors, setErrors] = useState([] as number[]);
@@ -35,9 +33,7 @@ export const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
 				</Typography>
 			</CardContent>
 			<CardActions disableSpacing>
-				<IconButton onClick={() => dispatch(moviesActions.updateFavourites(movie))}>
-					<FavoriteIcon color={favourites.indexOf(movie.id) !== -1 ? 'error' : 'inherit'} />
-				</IconButton>
+				<FavoriteIcon color={favourites.indexOf(movie.id) !== -1 ? 'error' : 'action'} />
 			</CardActions>
 		</Card>
 	);
