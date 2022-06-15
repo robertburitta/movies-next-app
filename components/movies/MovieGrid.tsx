@@ -7,19 +7,26 @@ import { RootState } from '../../store';
 import { useMovies } from '../../hooks/useMovies';
 
 export const MovieGrid = () => {
-	const { loadMorePending, handleLoadMore } = useMovies();
+	const { loadMorePending, handleLoadMore, fetchedAllFilms } = useMovies();
 	const movies: MovieType[] = useSelector((state: RootState) => state.movies.movies);
 
 	return (
-		<Grid container spacing={2} mt={2} mb={4}>
-			{movies.map((movie) =>
-				<Grid item xs={12} lg={6} key={movie.id}>
-					<MovieCard movie={movie} />
+		<React.Fragment>
+			{movies.length > 0 &&
+				<Grid container spacing={2} mt={2} mb={4}>
+					{movies.map((movie) =>
+						<Grid item xs={12} lg={6} key={movie.id}>
+							<MovieCard movie={movie} />
+						</Grid>
+					)}
+
+					{!fetchedAllFilms &&
+						<Button variant='contained' sx={{ margin: '20px auto 0' }} onClick={handleLoadMore} disabled={loadMorePending}>
+							{loadMorePending ? <CircularProgress color='inherit' size={25} /> : 'Load more...'}
+						</Button>
+					}
 				</Grid>
-			)}
-			<Button variant='contained' sx={{ margin: '20px auto 0' }} onClick={handleLoadMore} disabled={loadMorePending}>
-				{loadMorePending ? <CircularProgress color='inherit' size={25} /> : 'Load more...'}
-			</Button>
-		</Grid>
+			}
+		</React.Fragment>
 	);
 };

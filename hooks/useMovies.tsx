@@ -10,6 +10,7 @@ export const useMovies = () => {
 	const { currentPage, limit } = useSelector((state: RootState) => state.movies);
 	const [getMoviesPending, setGetMoviesPending] = useState(false);
 	const [loadMorePending, setLoadMorePending] = useState(false);
+	const [fetchedAllFilms, setFetchedAllFilms] = useState(false);
 	const [isError, setIsError] = useState(false);
 
 	const getMovies = async () => {
@@ -23,7 +24,15 @@ export const useMovies = () => {
 			setGetMoviesPending(false);
 			setIsError(false);
 		} catch (err) {
-			console.error(err);
+			console.error((err as Error).message);
+
+			if ((err as Error).message === 'Fetched all films') {
+				setFetchedAllFilms(true);
+				// info dialog - fetched all films
+			} else {
+				// dialog - network error, try again
+			}
+
 			setGetMoviesPending(false);
 			setIsError(true);
 		}
@@ -41,7 +50,15 @@ export const useMovies = () => {
 			setLoadMorePending(false);
 			setIsError(false);
 		} catch (err) {
-			console.log(err);
+			console.error((err as Error).message);
+
+			if ((err as Error).message === 'Fetched all films') {
+				setFetchedAllFilms(true);
+				// info dialog - fetched all films
+			} else {
+				// dialog - network error, try again
+			}
+
 			setLoadMorePending(false);
 			setIsError(true);
 		}
@@ -52,6 +69,7 @@ export const useMovies = () => {
 		getMoviesPending,
 		getMovies,
 		loadMorePending,
-		handleLoadMore
+		handleLoadMore,
+		fetchedAllFilms
 	};
 };
