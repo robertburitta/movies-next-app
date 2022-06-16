@@ -3,11 +3,11 @@ import { useDispatch } from 'react-redux';
 import { searchMedia } from '../pages/api/api';
 import { searchActions } from '../store/searchSlice';
 import { MovieType } from '../types/MovieType';
+import { ResultHandler } from '../types/ResultHandler';
 
-export const useSearch = () => {
+export const useSearch = ({ onSuccess, onError }: ResultHandler) => {
 	const dispatch = useDispatch();
 	const [isPending, setIsPending] = useState(false);
-	const [isError, setIsError] = useState(false);
 
 	const handleSearch = async (query: string) => {
 		setIsPending(true);
@@ -17,17 +17,23 @@ export const useSearch = () => {
 
 			dispatch(searchActions.setSearchResult(result));
 
+			onSuccess();
 			setIsPending(false);
-			setIsError(false);
 		} catch (err) {
-			console.error(err);
+			console.error((err as Error).message);
+
+			onError({
+				tryAgain: true,
+				title: 'Network error',
+				message: 'An error occurred while fetching movies. Please try again.',
+				callback: () => handleSearch(query)
+			});
+
 			setIsPending(false);
-			setIsError(true);
 		}
 	};
 
 	return {
-		isError,
 		isPending,
 		handleSearch
 	};

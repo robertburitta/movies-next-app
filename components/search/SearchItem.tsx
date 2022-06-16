@@ -17,7 +17,7 @@ export const SearchItem: React.FC<SearchItemProps> = ({ movie }) => {
 	return (
 		<Card sx={{ display: 'flex', height: { xs: 'auto', sm: 300 }, maxWidth: '100%' }}>
 			{matches && errors.indexOf(movie.id) === -1 && movie.posterUrl &&
-				<CardMedia component='img' height='300' image={movie.posterUrl} sx={{ width: '200px !important' }} onError={() => setErrors((prev) => [...prev, movie.id])} />
+				<CardMedia component='img' height='300' image={movie.posterUrl} sx={{ width: '200px !important', flexShrink: 0 }} onError={() => setErrors((prev) => [...prev, movie.id])} />
 			}
 			<CardContent sx={{ flexGrow: 1 }}>
 				<Typography variant='h5'>{movie.title}</Typography>

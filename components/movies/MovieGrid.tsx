@@ -46,7 +46,7 @@ export const MovieGrid = () => {
 							}
 						</Grid>
 					}
-					{Object.keys(error).length && <AlertDialog error={error} />}
+					{Object.keys(error).length !== 0 && <AlertDialog error={error} />}
 				</React.Fragment>
 			}
 		</React.Fragment>

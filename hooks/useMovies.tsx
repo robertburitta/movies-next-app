@@ -17,12 +17,13 @@ export const useMovies = ({ onSuccess, onError }: ResultHandler) => {
 		setGetMoviesPending(true);
 
 		try {
-			const movies = await fetchMediaList(limit, currentPage) as MovieType[];
+			const movies = await fetchMediaList(limit, 1) as MovieType[];
 
 			dispatch(moviesActions.saveMovies(movies));
+			dispatch(moviesActions.setCurrentPage(1));
 
-			setGetMoviesPending(false);
 			onSuccess();
+			setGetMoviesPending(false);
 		} catch (err) {
 			console.error((err as Error).message);
 
@@ -56,6 +57,7 @@ export const useMovies = ({ onSuccess, onError }: ResultHandler) => {
 			dispatch(moviesActions.loadMoreMovies(moreMovies));
 			dispatch(moviesActions.setCurrentPage(currentPage + 1));
 
+			onSuccess();
 			setLoadMorePending(false);
 		} catch (err) {
 			console.error((err as Error).message);
