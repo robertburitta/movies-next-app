@@ -17,7 +17,7 @@ export const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
 	const [errors, setErrors] = useState([] as number[]);
 
 	return (
-		<Card sx={{ display: 'flex', height: 300, maxWidth: '100%' }}>
+		<Card sx={{ display: 'flex', height: { xs: 'auto', sm: 300 }, maxWidth: '100%' }}>
 			{matches && errors.indexOf(movie.id) === -1 && movie.posterUrl &&
 				<CardMedia component='img' height='300' image={movie.posterUrl} sx={{ width: '200px !important' }} onError={() => setErrors((prev) => [...prev, movie.id])} />
 			}
