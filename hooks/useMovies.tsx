@@ -3,15 +3,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchMediaList } from '../pages/api/api';
 import { RootState } from '../store';
 import { moviesActions } from '../store/moviesSlice';
+import { ResultHandler } from '../types/ResultHandler';
 import { MovieType } from '../types/MovieType';
 
-export const useMovies = () => {
+export const useMovies = ({ onSuccess, onError }: ResultHandler) => {
 	const dispatch = useDispatch();
 	const { currentPage, limit } = useSelector((state: RootState) => state.movies);
 	const [getMoviesPending, setGetMoviesPending] = useState(false);
 	const [loadMorePending, setLoadMorePending] = useState(false);
 	const [fetchedAllFilms, setFetchedAllFilms] = useState(false);
-	const [isError, setIsError] = useState(false);
 
 	const getMovies = async () => {
 		setGetMoviesPending(true);
@@ -22,19 +22,28 @@ export const useMovies = () => {
 			dispatch(moviesActions.saveMovies(movies));
 
 			setGetMoviesPending(false);
-			setIsError(false);
+			onSuccess();
 		} catch (err) {
 			console.error((err as Error).message);
 
 			if ((err as Error).message === 'Fetched all films') {
 				setFetchedAllFilms(true);
-				// info dialog - fetched all films
+
+				onError({
+					tryAgain: false,
+					title: 'Fetched all movies',
+					message: 'Already fetched all of our movies.'
+				});
 			} else {
-				// dialog - network error, try again
+				onError({
+					tryAgain: true,
+					title: 'Network error',
+					message: 'An error occurred while fetching movies. Please try again.',
+					callback: getMovies
+				});
 			}
 
 			setGetMoviesPending(false);
-			setIsError(true);
 		}
 	};
 
@@ -48,24 +57,31 @@ export const useMovies = () => {
 			dispatch(moviesActions.setCurrentPage(currentPage + 1));
 
 			setLoadMorePending(false);
-			setIsError(false);
 		} catch (err) {
 			console.error((err as Error).message);
 
 			if ((err as Error).message === 'Fetched all films') {
 				setFetchedAllFilms(true);
-				// info dialog - fetched all films
+
+				onError({
+					tryAgain: false,
+					title: 'Fetched all movies',
+					message: 'Already fetched all of our movies.'
+				});
 			} else {
-				// dialog - network error, try again
+				onError({
+					tryAgain: true,
+					title: 'Network error',
+					message: 'An error occurred while fetching movies. Please try again.',
+					callback: handleLoadMore
+				});
 			}
 
 			setLoadMorePending(false);
-			setIsError(true);
 		}
 	};
 
 	return {
-		isError,
 		getMoviesPending,
 		getMovies,
 		loadMorePending,

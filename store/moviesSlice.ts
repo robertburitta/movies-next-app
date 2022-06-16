@@ -32,7 +32,6 @@ export const moviesSlice = createSlice({
 				state.movies.sort((a) => a.id === action.payload.id ? -1 : 1);
 				state.favourites.push(action.payload.id);
 			}
-			console.log(action.payload, current(state.favourites));
 		},
 		setCurrentPage(state: InitialStateType, action: PayloadAction<number>) {
 			state.currentPage = action.payload;
