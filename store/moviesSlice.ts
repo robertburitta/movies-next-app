@@ -32,6 +32,19 @@ export const moviesSlice = createSlice({
 				state.movies.sort((a) => a.id === action.payload.id ? -1 : 1);
 				state.favourites.push(action.payload.id);
 			}
+
+			sessionStorage.setItem('favourites', JSON.stringify(state.favourites));
+		},
+		checkFavourites(state: InitialStateType) {
+			const favourites: number[] = JSON.parse(sessionStorage.getItem('favourites') as string);
+
+			if (favourites !== null) {
+				state.favourites = favourites;
+
+				favourites.forEach((id) => {
+					state.movies.sort((a) => a.id === id ? -1 : 1);
+				});
+			}
 		},
 		setCurrentPage(state: InitialStateType, action: PayloadAction<number>) {
 			state.currentPage = action.payload;

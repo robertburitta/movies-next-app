@@ -20,6 +20,7 @@ export const useMovies = ({ onSuccess, onError }: ResultHandler) => {
 			const movies = await fetchMediaList(limit, 1) as MovieType[];
 
 			dispatch(moviesActions.saveMovies(movies));
+			dispatch(moviesActions.checkFavourites());
 			dispatch(moviesActions.setCurrentPage(1));
 
 			onSuccess();
