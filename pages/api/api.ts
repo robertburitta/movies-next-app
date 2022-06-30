@@ -50,3 +50,17 @@ export function searchMedia(query: string): Promise<MediaList[]> {
 		}, Math.floor(Math.random() * maxRequestTimeout) * 1000);
 	});
 }
+
+export function getVideoById(id: number): Promise<MediaList> {
+	return new Promise((resolve, reject) => {
+		if (Math.random() < errorPossibility) {
+			reject(new Error('Network error'));
+		}
+
+		setTimeout(() => {
+			resolve(
+				mediaList.filter((item) => item.id === id)[0]
+			);
+		}, Math.floor(Math.random() * maxRequestTimeout) * 1000);
+	});
+}

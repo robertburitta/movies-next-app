@@ -1,4 +1,4 @@
-export type ErrorType = {
+export interface ErrorType {
 	tryAgain: boolean;
 	title: string;
 	message: string;
