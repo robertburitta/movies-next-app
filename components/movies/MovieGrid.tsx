@@ -1,28 +1,14 @@
 import React, { useState } from 'react';
 import { Button, CircularProgress, Grid } from '@mui/material';
 import { MovieCard } from './MovieCard';
-// import { MovieType } from '../../types/MovieType';
-// import { useSelector } from 'react-redux';
-// import { RootState } from '../../store';
-import { useMovies } from '../../hooks/useMovies';
 import { AlertDialog } from '../AlertDialog';
 import { ErrorType } from '../../types/ErrorType';
-import { useFetchMovies } from "../../hooks/useFetchMovies";
+import { useFetchMovies } from '../../hooks/useFetchMovies';
 
 export const MovieGrid = () => {
-	// const movies: MovieType[] = useSelector((state: RootState) => state.movies.movies);
 	const [error, setError] = useState({} as ErrorType);
 
-	// const { getMoviesPending, getMovies, loadMorePending, handleLoadMore, fetchedAllFilms } = useMovies({
-	// 	onSuccess: () => {
-	// 		setError({} as ErrorType);
-	// 	},
-	// 	onError: (error) => {
-	// 		setError(error);
-	// 	}
-	// });
-
-	const { movies, loadMore, isLoading } = useFetchMovies({
+	const { movies, loadMore, isLoading, isError } = useFetchMovies({
 		onSuccess: () => {
 			setError({} as ErrorType);
 		},
@@ -30,10 +16,6 @@ export const MovieGrid = () => {
 			setError(error);
 		}
 	});
-
-	// useEffect(() => {
-	// 	getMovies();
-	// }, []);
 
 	return (
 		<React.Fragment>
@@ -49,11 +31,9 @@ export const MovieGrid = () => {
 								</Grid>
 							)}
 
-							{/* {!fetchedAllFilms && */}
 							<Button variant='contained' sx={{ margin: '20px auto 0' }} onClick={loadMore} disabled={isLoading && movies.length !== 0}>
 								{isLoading && movies.length !== 0 ? <CircularProgress color='inherit' size={25} /> : 'Load more...'}
 							</Button>
-							{/* } */}
 						</Grid>
 					}
 					{Object.keys(error).length !== 0 && <AlertDialog error={error} />}

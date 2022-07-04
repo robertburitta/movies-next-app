@@ -1,31 +1,53 @@
-import React from 'react';
-import { Grid } from '@mui/material';
-// import { useDispatch, useSelector } from 'react-redux';
-// import { RootState } from '../../store';
-// import { MovieType } from '../../types/MovieType';
+import React, { useState } from 'react';
+import { CircularProgress, FormControl, Grid, InputAdornment, InputLabel, OutlinedInput } from '@mui/material';
 import { SearchItem } from './SearchItem';
-import { MediaList } from '../../pages/api/api';
-// import { searchActions } from '../../store/searchSlice';
+import { AlertDialog } from '../AlertDialog';
+import { ErrorType } from '../../types/ErrorType';
+import { useFetchSearch } from '../../hooks/useFetchSearch';
 
-interface SearchListProps {
-	result: MediaList[] | undefined;
-}
+export const SearchList = () => {
+	const [query, setQuery] = useState<string>('');
+	const [error, setError] = useState({} as ErrorType);
 
-export const SearchList: React.FC<SearchListProps> = ({ result }) => {
-	// const dispatch = useDispatch();
-	// const result: MovieType[] = useSelector((state: RootState) => state.search.result);
+	const { result, isLoading, isError } = useFetchSearch({
+		onSuccess: () => {
+			setError({} as ErrorType);
+		},
+		onError: (error) => {
+			setError(error);
+			console.log('ERROR ERROR ERROR');
+		},
+		query
+	});
 
-	// useEffect(() => {
-	// 	dispatch(searchActions.clearSearchResult());
-	// }, []);
+	const handleChange = (query: string) => {
+		if (query.length >= 3) {
+			setQuery(query);
+		} else {
+			setQuery('');
+		}
+	};
 
 	return (
-		<Grid container spacing={2} mt={2} mb={4}>
-			{result?.map((movie) =>
-				<Grid item xs={12} lg={6} key={movie.id}>
-					<SearchItem movie={movie} />
-				</Grid>
-			)}
-		</Grid>
+		<React.Fragment>
+			<FormControl sx={{ mt: '20px' }}>
+				<InputLabel htmlFor='searchInput'>Search movie</InputLabel>
+				<OutlinedInput id='searchInput' label='Search movie' sx={{ width: 287 }} onChange={(e) => handleChange(e.target.value)}
+					endAdornment={
+						<InputAdornment position="end">
+							{isLoading && <CircularProgress size={30} />}
+						</InputAdornment>
+					}
+				/>
+			</FormControl>
+			<Grid container spacing={2} mt={2} mb={4}>
+				{result?.map((movie) =>
+					<Grid item xs={12} lg={6} key={movie.id}>
+						<SearchItem movie={movie} />
+					</Grid>
+				)}
+			</Grid>
+			{isError && <AlertDialog error={error} />}
+		</React.Fragment>
 	);
 };

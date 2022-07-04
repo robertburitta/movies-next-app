@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { useQuery } from 'react-query';
 import { fetchMediaList, MediaList } from '../pages/api/api';
 import { ResultHandler } from '../types/ResultHandler';
-import { ErrorType } from '../types/ErrorType';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store';
 import { sort } from '../utils/sort';
@@ -20,13 +19,26 @@ export const useFetchMovies = ({ onSuccess, onError, items = 10 }: UseFetchMovie
 		setMovies((prev) => sort(prev, favourites));
 	}, [favourites]);
 
-	const { isLoading } = useQuery(['movies', page, items], () => fetchMediaList(items, page), {
+	const { isLoading, isError, refetch } = useQuery(['movies', page, items], () => fetchMediaList(items, page), {
 		onSuccess: (data) => {
 			onSuccess();
 			setMovies(prev => prev ? sort([...prev, ...data], favourites) : sort([...data], favourites));
 		},
 		onError: (err) => {
-			onError(err as ErrorType);
+			if ((err as Error).message === 'Fetched all films') {
+				onError({
+					tryAgain: false,
+					title: 'Fetched all movies',
+					message: 'Already fetched all of our movies.'
+				});
+			} else {
+				onError({
+					tryAgain: true,
+					title: 'Network error',
+					message: 'An error occurred while fetching movies. Please try again.',
+					callback: refetch
+				});
+			}
 		}
 	});
 
@@ -37,6 +49,7 @@ export const useFetchMovies = ({ onSuccess, onError, items = 10 }: UseFetchMovie
 	return {
 		movies,
 		loadMore,
-		isLoading
+		isLoading,
+		isError
 	};
 };

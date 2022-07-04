@@ -1,6 +1,5 @@
 import { useQuery } from 'react-query';
 import { searchMedia } from '../pages/api/api';
-import { ErrorType } from '../types/ErrorType';
 import { ResultHandler } from '../types/ResultHandler';
 
 interface UseFetchSearchProps extends ResultHandler {
@@ -8,17 +7,24 @@ interface UseFetchSearchProps extends ResultHandler {
 }
 
 export const useFetchSearch = ({ onSuccess, onError, query }: UseFetchSearchProps) => {
-	const { data, isLoading } = useQuery(["search", query], () => searchMedia(query), {
+	const { data, isLoading, isError, refetch } = useQuery(['search', query], () => searchMedia(query), {
 		onSuccess: () => {
 			onSuccess();
 		},
-		onError: (err) => {
-			onError(err as ErrorType);
-		}
+		onError: () => {
+			onError({
+				tryAgain: true,
+				title: 'Network error',
+				message: 'An error occurred while fetching movies. Please try again.',
+				callback: refetch
+			});
+		},
+		enabled: query.length >= 3
 	});
 
 	return {
 		result: data,
-		isLoading
+		isLoading,
+		isError
 	};
 };
