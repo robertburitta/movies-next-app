@@ -5,6 +5,8 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import { useDispatch, useSelector } from 'react-redux';
 import { moviesActions } from '../../store/moviesSlice';
 import { RootState } from '../../store';
+import { Routes } from '../../router/Routes';
+import Link from 'next/link';
 
 interface MovieCardProps {
 	movie: MovieType;
@@ -17,28 +19,30 @@ export const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
 	const [errors, setErrors] = useState([] as number[]);
 
 	return (
-		<Card sx={{ display: 'flex', height: { xs: 'auto', sm: 300 }, maxWidth: '100%' }}>
-			{matches && errors.indexOf(movie.id) === -1 && movie.posterUrl &&
-				<CardMedia component='img' height='300' image={movie.posterUrl} sx={{ width: '200px !important', flexShrink: 0 }} onError={() => setErrors((prev) => [...prev, movie.id])} />
-			}
-			<CardContent sx={{ flexGrow: 1 }}>
-				<Typography variant='h5'>{movie.title}</Typography>
-				<Typography variant='body2' mt={2} mb={1}>
-					Runtime: {movie.runtime} minutes<br />
-					Production year: {movie.year}<br />
-					Director: {movie.director}<br />
-					Actors: {movie.actors}<br />
-				</Typography>
-				<Divider />
-				<Typography variant='body2' mt={1}>
-					Plot: {movie.plot}
-				</Typography>
-			</CardContent>
-			<CardActions disableSpacing>
-				<IconButton onClick={() => dispatch(moviesActions.updateFavourites(movie))}>
-					<FavoriteIcon color={favourites.indexOf(movie.id) !== -1 ? 'error' : 'inherit'} />
-				</IconButton>
-			</CardActions>
-		</Card>
+		<Link href={`${Routes.VIDEO(movie.id)}`}>
+			<Card sx={{ display: 'flex', height: { xs: 'auto', sm: 300 }, maxWidth: '100%', cursor: 'pointer' }}>
+				{matches && errors.indexOf(movie.id) === -1 && movie.posterUrl &&
+					<CardMedia component='img' height='300' image={movie.posterUrl} sx={{ width: '200px !important', flexShrink: 0 }} onError={() => setErrors((prev) => [...prev, movie.id])} />
+				}
+				<CardContent sx={{ flexGrow: 1 }}>
+					<Typography variant='h5'>{movie.title}</Typography>
+					<Typography variant='body2' mt={2} mb={1}>
+						Runtime: {movie.runtime} minutes<br />
+						Production year: {movie.year}<br />
+						Director: {movie.director}<br />
+						Actors: {movie.actors}<br />
+					</Typography>
+					<Divider />
+					<Typography variant='body2' mt={1}>
+						Plot: {movie.plot}
+					</Typography>
+				</CardContent>
+				<CardActions disableSpacing>
+					<IconButton onClick={(e) => { e.preventDefault(); dispatch(moviesActions.updateFavourites(movie)); }}>
+						<FavoriteIcon color={favourites.indexOf(movie.id) !== -1 ? 'error' : 'inherit'} />
+					</IconButton>
+				</CardActions>
+			</Card>
+		</Link>
 	);
 };
