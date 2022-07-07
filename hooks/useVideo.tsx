@@ -35,6 +35,8 @@ export const useVideo = ({ id }: UseVideoProps) => {
 					responsive: true,
 					fluid: true
 				});
+			} else {
+				alert('Sorry, there is no video');
 			}
 		}
 	}, [videoRef, videoData]);

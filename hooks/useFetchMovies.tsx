@@ -20,6 +20,8 @@ export const useFetchMovies = ({ onSuccess, onError, items = 10 }: UseFetchMovie
 	}, [favourites]);
 
 	const { isLoading, isError, refetch } = useQuery(['movies', page, items], () => fetchMediaList(items, page), {
+		refetchOnWindowFocus: false,
+		refetchOnReconnect: false,
 		onSuccess: (data) => {
 			onSuccess();
 			setMovies(prev => prev ? sort([...prev, ...data], favourites) : sort([...data], favourites));

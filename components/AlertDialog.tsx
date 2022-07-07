@@ -4,13 +4,15 @@ import { ErrorType } from '../types/ErrorType';
 
 interface AlertDialogProps {
 	error: ErrorType;
+	setError: React.Dispatch<React.SetStateAction<ErrorType>>;
 }
 
-export const AlertDialog: React.FC<AlertDialogProps> = ({ error }) => {
+export const AlertDialog: React.FC<AlertDialogProps> = ({ error, setError }) => {
 	const [open, setOpen] = useState(true);
 
 	const handleClose = () => {
 		setOpen(false);
+		setError({} as ErrorType);
 	};
 
 	const handleTryAgain = () => {

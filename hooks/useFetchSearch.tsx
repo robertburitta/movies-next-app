@@ -8,6 +8,10 @@ interface UseFetchSearchProps extends ResultHandler {
 
 export const useFetchSearch = ({ onSuccess, onError, query }: UseFetchSearchProps) => {
 	const { data, isLoading, isError, refetch } = useQuery(['search', query], () => searchMedia(query), {
+		refetchOnMount: false,
+		refetchOnWindowFocus: false,
+		refetchOnReconnect: false,
+		enabled: query.length >= 3,
 		onSuccess: () => {
 			onSuccess();
 		},
@@ -18,8 +22,7 @@ export const useFetchSearch = ({ onSuccess, onError, query }: UseFetchSearchProp
 				message: 'An error occurred while fetching movies. Please try again.',
 				callback: refetch
 			});
-		},
-		enabled: query.length >= 3
+		}
 	});
 
 	return {

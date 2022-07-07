@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Button, CircularProgress, Grid } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { Box, Button, CircularProgress, Grid } from '@mui/material';
 import { MovieCard } from './MovieCard';
 import { AlertDialog } from '../AlertDialog';
 import { ErrorType } from '../../types/ErrorType';
@@ -8,7 +8,7 @@ import { useFetchMovies } from '../../hooks/useFetchMovies';
 export const MovieGrid = () => {
 	const [error, setError] = useState({} as ErrorType);
 
-	const { movies, loadMore, isLoading, isError } = useFetchMovies({
+	const { movies, loadMore, isLoading } = useFetchMovies({
 		onSuccess: () => {
 			setError({} as ErrorType);
 		},
@@ -27,7 +27,7 @@ export const MovieGrid = () => {
 						<Grid container spacing={2} mt={2} mb={4}>
 							{movies?.map((movie) =>
 								<Grid item xs={12} lg={6} key={movie.id}>
-									<MovieCard movie={movie} />
+									<MovieCard movie={movie} setError={setError} />
 								</Grid>
 							)}
 
@@ -36,7 +36,7 @@ export const MovieGrid = () => {
 							</Button>
 						</Grid>
 					}
-					{Object.keys(error).length !== 0 && <AlertDialog error={error} />}
+					{Object.keys(error).length !== 0 && <AlertDialog error={error} setError={setError} />}
 				</React.Fragment>
 			}
 		</React.Fragment>

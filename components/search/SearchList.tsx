@@ -15,7 +15,6 @@ export const SearchList = () => {
 		},
 		onError: (error) => {
 			setError(error);
-			console.log('ERROR ERROR ERROR');
 		},
 		query
 	});
@@ -47,7 +46,7 @@ export const SearchList = () => {
 					</Grid>
 				)}
 			</Grid>
-			{isError && <AlertDialog error={error} />}
+			{isError && <AlertDialog error={error} setError={setError} />}
 		</React.Fragment>
 	);
 };
