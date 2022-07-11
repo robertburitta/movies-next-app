@@ -1,7 +1,10 @@
-import React from 'react'
+import React from 'react';
+import { useFormControl } from '../FormControl/useFormControl';
 
-export const FormError = () => {
-  return (
-	<div>FormError</div>
-  )
-}
+export const FormError: React.FC<React.PropsWithChildren> = ({ children }) => {
+	return (
+		<p>
+			{children}
+		</p>
+	);
+};

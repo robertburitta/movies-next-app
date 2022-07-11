@@ -1,6 +1,6 @@
 import { ErrorType } from './ErrorType';
 
-export interface ResultHandler {
-	onSuccess: () => void;
-	onError: (error: ErrorType) => void;
+export interface ResultHandler<T> {
+	onSuccess: (data?: T) => void;
+	onError: (error: ErrorType | Error) => void;
 }

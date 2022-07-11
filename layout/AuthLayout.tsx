@@ -1,11 +1,10 @@
+import { Container } from '@mui/material';
 import Head from 'next/head';
 import React from 'react';
-import { Navbar } from '../components/Navbar';
-import { Container } from '@mui/material';
 
-interface BaseLayoutProps { children: React.ReactNode; }
+interface AuthLayoutProps { children: React.ReactNode; }
 
-const BaseLayout: React.FC<BaseLayoutProps> = ({ children }) => {
+const AuthLayout: React.FC<AuthLayoutProps> = ({ children }) => {
 	return (
 		<React.Fragment>
 			<Head>
@@ -13,7 +12,6 @@ const BaseLayout: React.FC<BaseLayoutProps> = ({ children }) => {
 				<meta name="description" content="Movie Next App" />
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
-			<Navbar />
 			<Container maxWidth="xl">
 				{children}
 			</Container>
@@ -21,4 +19,4 @@ const BaseLayout: React.FC<BaseLayoutProps> = ({ children }) => {
 	);
 };
 
-export const getBaseLayout = (page: React.ReactNode) => <BaseLayout>{page}</BaseLayout>;
+export const getAuthLayout = (page: React.ReactNode) => <AuthLayout>{page}</AuthLayout>;

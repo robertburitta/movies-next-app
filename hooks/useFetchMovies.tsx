@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../store';
 import { sort } from '../utils/sort';
 
-interface UseFetchMoviesProps extends ResultHandler {
+interface UseFetchMoviesProps extends ResultHandler<MediaList[]> {
 	items?: number;
 }
 

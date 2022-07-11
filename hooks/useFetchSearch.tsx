@@ -1,8 +1,8 @@
 import { useQuery } from 'react-query';
-import { searchMedia } from '../pages/api/api';
+import { MediaList, searchMedia } from '../pages/api/api';
 import { ResultHandler } from '../types/ResultHandler';
 
-interface UseFetchSearchProps extends ResultHandler {
+interface UseFetchSearchProps extends ResultHandler<MediaList[]> {
 	query: string;
 }
 

@@ -65,7 +65,7 @@ export const MovieCard: React.FC<MovieCardProps> = ({ movie, setError }) => {
 			</Link>
 			{videoLoading &&
 				<React.Fragment>
-					<Box sx={{ position: 'absolute', top: 0, left: 0, height: "100%", width: '100%', backgroundColor: '#000', opacity: 0.7 }}></Box>
+					<Box sx={{ position: 'absolute', top: 0, left: 0, height: '100%', width: '100%', backgroundColor: '#000', opacity: 0.7 }}></Box>
 					<CircularProgress sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }} />
 				</React.Fragment>
 			}
