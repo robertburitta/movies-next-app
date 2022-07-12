@@ -12,6 +12,15 @@
 a {
 	color: #FFF;
 	text-decoration: none;
+
+	&.auth {
+		margin-top: 10px;
+		color: #000;
+
+		&:hover {
+			color: #08498a;
+		}
+	}
 }
 
 header a {

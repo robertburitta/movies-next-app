@@ -14,14 +14,14 @@ import { Button, CircularProgress, Stack } from '@mui/material';
 import Link from 'next/link';
 import { Routes } from '../router/Routes';
 
-export const Login: PageWithLayout = () => {
+export const Register: PageWithLayout = () => {
 	const router = useRouter();
 	const dispatch = useDispatch();
 
-	const { isPending, form: { register, handleLogin, formState: { errors } } } = useAuth({
+	const { isPending, form: { register, handleRegister, formState: { errors } } } = useAuth({
 		onSuccess: (user) => {
 			router.push('/');
-			toast.success(`Welcome ${user?.firstName}`);
+			toast.success('Successfully signed up!');
 
 			if (user) {
 				dispatch(userActions.loginUser(user));
@@ -33,10 +33,20 @@ export const Login: PageWithLayout = () => {
 	});
 
 	return (
-		<Stack direction="column" alignItems="center" sx={{ mt: 20 }}>
+		<Stack direction="column" alignItems="center" sx={{ mt: 15 }}>
+			<FormControl isRequired isInvalid={!!errors.firstName}>
+				<FormLabel>First name</FormLabel>
+				<Input {...register('firstName')} />
+				<FormError>{errors?.firstName?.message}</FormError>
+			</FormControl>
+			<FormControl isRequired isInvalid={!!errors.lastName}>
+				<FormLabel>Last name</FormLabel>
+				<Input {...register('lastName')} />
+				<FormError>{errors?.lastName?.message}</FormError>
+			</FormControl>
 			<FormControl isRequired isInvalid={!!errors.email}>
-				<FormLabel>Login</FormLabel>
-				<Input {...register('email')} />
+				<FormLabel>Email</FormLabel>
+				<Input type="email" {...register('email')} />
 				<FormError>{errors?.email?.message}</FormError>
 			</FormControl>
 			<FormControl isRequired isInvalid={!!errors.password}>
@@ -44,16 +54,21 @@ export const Login: PageWithLayout = () => {
 				<Input type="password" {...register('password')} />
 				<FormError>{errors?.password?.message}</FormError>
 			</FormControl>
-			<Button variant="contained" color="success" size="large" onClick={handleLogin} disabled={isPending} sx={{ width: 100 }}>
-				{isPending ? <CircularProgress color="inherit" size={26} /> : 'Login'}
+			<FormControl isRequired isInvalid={!!errors.confirm}>
+				<FormLabel>Password</FormLabel>
+				<Input type="password" {...register('confirm')} />
+				<FormError>{errors?.confirm?.message}</FormError>
+			</FormControl>
+			<Button variant="contained" color="success" size="large" onClick={handleRegister} disabled={isPending} sx={{ width: 120 }}>
+				{isPending ? <CircularProgress color="inherit" size={26} /> : 'Register'}
 			</Button>
-			<Link href={Routes.REGISTER}>
-				<a className="auth">Dont have an account? Register</a>
+			<Link href={Routes.LOGIN}>
+				<a className="auth">Already have account? Login</a>
 			</Link>
 		</Stack>
 	);
 };
 
-Login.getLayout = getAuthLayout;
+Register.getLayout = getAuthLayout;
 
-export default Login;
+export default Register;
