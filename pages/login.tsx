@@ -10,7 +10,7 @@ import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
 import { userActions } from '../store/userSlice';
 import { useRouter } from 'next/router';
-import { Button, Stack } from '@mui/material';
+import { Button, CircularProgress, Stack } from '@mui/material';
 
 export const Login: PageWithLayout = () => {
 	const router = useRouter();
@@ -39,10 +39,12 @@ export const Login: PageWithLayout = () => {
 			</FormControl>
 			<FormControl isRequired isInvalid={!!errors.password}>
 				<FormLabel>Password</FormLabel>
-				<Input {...register('password')} />
+				<Input type="password" {...register('password')} />
 				<FormError>{errors?.password?.message}</FormError>
 			</FormControl>
-			<Button variant="contained" color="success" size="large" onClick={handleLogin}>Login</Button>
+			<Button variant="contained" color="success" size="large" onClick={handleLogin} disabled={isPending} sx={{ width: 100 }}>
+				{isPending ? <CircularProgress color="inherit" size={26} /> : 'Login'}
+			</Button>
 		</Stack>
 	);
 };

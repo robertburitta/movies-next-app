@@ -17,7 +17,9 @@ export const FormControlProvider: React.FC<React.PropsWithChildren<FormControlPr
 
 	return (
 		<FormControlContext.Provider value={value}>
-			{children}
+			<div className="formControl">
+				{children}
+			</div>
 		</FormControlContext.Provider>
 	);
 };

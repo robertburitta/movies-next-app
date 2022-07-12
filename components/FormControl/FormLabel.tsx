@@ -6,7 +6,7 @@ export const FormLabel: React.FC<React.PropsWithChildren<LabelPrimitive.LabelPro
 	const control = useFormControl();
 
 	return (
-		<LabelPrimitive.Root {...labelProps} id={control.labelId} htmlFor={control.inputId} data-disabled={control.isDisabled}>
+		<LabelPrimitive.Root {...labelProps} id={control.labelId} htmlFor={control.inputId} data-disabled={control.isDisabled} data-invalid={control.isInvalid}>
 			{children}
 		</LabelPrimitive.Root>
 	);
