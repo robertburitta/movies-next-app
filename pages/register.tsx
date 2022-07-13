@@ -7,8 +7,6 @@ import { FormError } from '../components/FormControl/FormError';
 import { Input } from '../components/input/Input';
 import { useAuth } from '../hooks/useAuth';
 import { toast } from 'react-toastify';
-import { useDispatch } from 'react-redux';
-import { userActions } from '../store/userSlice';
 import { useRouter } from 'next/router';
 import { Button, CircularProgress, Stack } from '@mui/material';
 import Link from 'next/link';
@@ -16,16 +14,11 @@ import { Routes } from '../router/Routes';
 
 export const Register: PageWithLayout = () => {
 	const router = useRouter();
-	const dispatch = useDispatch();
 
 	const { isPending, form: { register, handleRegister, formState: { errors } } } = useAuth({
-		onSuccess: (user) => {
+		onSuccess: () => {
 			router.push('/');
-			toast.success('Successfully signed up!');
-
-			if (user) {
-				dispatch(userActions.loginUser(user));
-			}
+			toast.success('Successfully registered!');
 		},
 		onError: (err) => {
 			toast.error(`${err}`);

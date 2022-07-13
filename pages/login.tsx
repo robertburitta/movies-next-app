@@ -7,25 +7,19 @@ import { FormError } from '../components/FormControl/FormError';
 import { Input } from '../components/input/Input';
 import { useAuth } from '../hooks/useAuth';
 import { toast } from 'react-toastify';
-import { useDispatch } from 'react-redux';
-import { userActions } from '../store/userSlice';
 import { useRouter } from 'next/router';
 import { Button, CircularProgress, Stack } from '@mui/material';
 import Link from 'next/link';
 import { Routes } from '../router/Routes';
+import GoogleIcon from '@mui/icons-material/Google';
 
 export const Login: PageWithLayout = () => {
 	const router = useRouter();
-	const dispatch = useDispatch();
 
-	const { isPending, form: { register, handleLogin, formState: { errors } } } = useAuth({
+	const { isPending, form: { register, handleLogin, formState: { errors } }, handleGoogleLogin } = useAuth({
 		onSuccess: (user) => {
 			router.push('/');
 			toast.success(`Welcome ${user?.firstName}`);
-
-			if (user) {
-				dispatch(userActions.loginUser(user));
-			}
 		},
 		onError: (err) => {
 			toast.error(`${err}`);
@@ -50,6 +44,9 @@ export const Login: PageWithLayout = () => {
 			<Link href={Routes.REGISTER}>
 				<a className="auth">Dont have an account? Register</a>
 			</Link>
+			<Button variant="contained" color="primary" size="large" onClick={handleGoogleLogin} endIcon={<GoogleIcon />} disabled={isPending} sx={{ width: 180, mt: 5 }}>
+				{isPending ? <CircularProgress color="inherit" size={26} /> : 'Login with'}
+			</Button>
 		</Stack>
 	);
 };
