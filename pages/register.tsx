@@ -15,7 +15,7 @@ import { Routes } from '../router/Routes';
 export const Register: PageWithLayout = () => {
 	const router = useRouter();
 
-	const { isPending, form: { register, handleRegister, formState: { errors } } } = useAuth({
+	const { isPending, formRegister: { register, handleRegister, formState: { errors } } } = useAuth({
 		onSuccess: () => {
 			router.push('/');
 			toast.success('Successfully registered!');

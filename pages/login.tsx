@@ -16,7 +16,7 @@ import GoogleIcon from '@mui/icons-material/Google';
 export const Login: PageWithLayout = () => {
 	const router = useRouter();
 
-	const { isPending, form: { register, handleLogin, formState: { errors } }, handleGoogleLogin } = useAuth({
+	const { isPending, formLogin: { register, handleLogin, formState: { errors } }, handleGoogleLogin } = useAuth({
 		onSuccess: (user) => {
 			router.push('/');
 			toast.success(`Welcome ${user?.firstName}`);

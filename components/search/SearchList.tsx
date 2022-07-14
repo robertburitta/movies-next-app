@@ -14,7 +14,7 @@ export const SearchList = () => {
 			setError({} as ErrorType);
 		},
 		onError: (error) => {
-			setError(error);
+			setError(error as ErrorType);
 		},
 		query
 	});

@@ -145,9 +145,11 @@ export const useAuth = ({ onSuccess, onError }: ResultHandler<User>) => {
 
 	return {
 		isPending,
-		form: {
+		formLogin: {
 			handleLogin: handleLoginSubmit(handleLogin),
 			...loginForm,
+		},
+		formRegister: {
 			handleRegister: handleRegisterSubmit(handleRegister),
 			...registerForm,
 		},

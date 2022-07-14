@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Box, Button, CircularProgress, Grid } from '@mui/material';
+import React, { useState } from 'react';
+import { Button, CircularProgress, Grid } from '@mui/material';
 import { MovieCard } from './MovieCard';
 import { AlertDialog } from '../AlertDialog';
 import { ErrorType } from '../../types/ErrorType';
@@ -13,7 +13,7 @@ export const MovieGrid = () => {
 			setError({} as ErrorType);
 		},
 		onError: (error) => {
-			setError(error);
+			setError(error as ErrorType);
 		}
 	});
 
