@@ -3,8 +3,8 @@ import { PageWithLayout } from '../types/PageWithLayout';
 import { getBaseLayout } from '../layout/BaseLayout';
 import { MovieGrid } from '../components/movies/MovieGrid';
 import { GetServerSideProps } from 'next';
-import { firebaseAdmin } from '../config/firebaseAdmin';
-import nookies from 'nookies';
+import { secureRoute } from '../router/secureRoute';
+
 
 export const Home: PageWithLayout = () => {
 	return (
@@ -19,19 +19,5 @@ Home.getLayout = getBaseLayout;
 export default Home;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-	try {
-		const cookies = nookies.get(context);
-		const token = await firebaseAdmin.auth().verifyIdToken(cookies.token);
-
-		return {
-			props: { token }
-		};
-	} catch (err) {
-		return {
-			redirect: {
-				destination: '/login',
-				permanent: false
-			}
-		};
-	}
+	return await secureRoute(context);
 };
