@@ -1,15 +1,15 @@
-import { useEffect, useState } from 'react';
-import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut } from 'firebase/auth';
+import { useState } from 'react';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, signOut } from 'firebase/auth';
 import { useForm } from 'react-hook-form';
 import { ResultHandler } from '../types/ResultHandler';
 import zod from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { User, UserStatus } from '../types/User';
 import { auth, db, provider } from '../config/firebase';
-import { ref, get, child, set, update } from 'firebase/database';
+import { ref, get, child, set } from 'firebase/database';
 import { useDispatch } from 'react-redux';
 import { userActions } from '../store/userSlice';
-import { useRouter } from 'next/router';
+import nookies from 'nookies';
 
 const LoginSchema = zod.object({
 	email: zod.string().email().min(1),
@@ -31,25 +31,10 @@ type LoginData = zod.infer<typeof LoginSchema>;
 type RegisterData = zod.infer<typeof RegisterSchema>;
 
 export const useAuth = ({ onSuccess, onError }: ResultHandler<User>) => {
-	const router = useRouter();
 	const dispatch = useDispatch();
 	const [isPending, setIsPending] = useState(false);
 	const { handleSubmit: handleLoginSubmit, ...loginForm } = useForm<LoginData>({ resolver: zodResolver(LoginSchema) });
 	const { handleSubmit: handleRegisterSubmit, ...registerForm } = useForm<RegisterData>({ resolver: zodResolver(RegisterSchema) });
-
-	useEffect(() => {
-		onAuthStateChanged(auth, async (userCredential) => {
-			if (userCredential) {
-				const snapshot = await get(child(ref(db), `users/${userCredential.uid}`));
-				const user = snapshot.val() as User;
-
-				if (user) {
-					router.push('/');
-					dispatch(userActions.loginUser(user));
-				}
-			}
-		});
-	}, []);
 
 	const handleLogin = async ({ email, password }: LoginData) => {
 		setIsPending(true);
@@ -58,6 +43,9 @@ export const useAuth = ({ onSuccess, onError }: ResultHandler<User>) => {
 			const userCredential = await signInWithEmailAndPassword(auth, email, password);
 			const snapshot = await get(child(ref(db), `users/${userCredential.user.uid}`));
 			const user = snapshot.val() as User;
+
+			const token = await userCredential.user.getIdToken();
+			nookies.set(null, 'token', token, { path: '/' });
 
 			onSuccess(user);
 			dispatch(userActions.loginUser(user));
@@ -105,6 +93,9 @@ export const useAuth = ({ onSuccess, onError }: ResultHandler<User>) => {
 				const snapshot = await get(child(ref(db), `users/${userCredential.user.uid}`));
 				let user = snapshot.val() as User;
 
+				const token = await userCredential?.user.getIdToken();
+				nookies.set(null, 'token', token, { path: '/' });
+
 				if (!user) {
 					user = {
 						firstName: userCredential.user.displayName?.split(' ')[0] || '',
@@ -133,6 +124,8 @@ export const useAuth = ({ onSuccess, onError }: ResultHandler<User>) => {
 
 		try {
 			await signOut(auth);
+
+			nookies.destroy(null, 'token');
 
 			onSuccess();
 			dispatch(userActions.logoutUser());

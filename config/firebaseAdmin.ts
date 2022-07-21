@@ -1,0 +1,17 @@
+import firebaseAdmin from 'firebase-admin';
+
+const projectId = 'my-project-1529184079312';
+
+if (!firebaseAdmin.apps.length) {
+	firebaseAdmin.initializeApp({
+		credential: firebaseAdmin.credential.cert({
+			projectId,
+			clientEmail: 'firebase-adminsdk-f8ga2@my-project-1529184079312.iam.gserviceaccount.com',
+			privateKey: '-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCQScRSLpF5BCwv\nBuIdyTwreTy7v/qb9xSGlc2179v6Izw4HB0BBRdDkVnUJo4Ldx8G9J3Rrjj8gl33\nA37hIXr77hdf4b/i2RiTLZquQP1Cy6UncvWDeGKwqVB9hWIk21Bqtom4BDmp7ZpT\nAJ62hPQQ/dDVhITclksyrrmEahCskUEqj6OfgW2jn0faNDTyeNu1BU/UQCqyGqTN\ngmbG/4xhsPXq3US0yMTl6Mnl3LjRRu9XteJhuVMdldmCqzEilweSwRDB3zAlv2sn\ncotUzRDPzEmN7ePWMiLQwoFKxMensCWFwAaiLDChIGhX7OFFp5nkuluO5HmOeqgD\neDanadZfAgMBAAECggEAKyYMMiFf+ocfaW7PBuZLepq2aVUXbjW86yR4UIyqxYps\n80ChAdGSa+/XI6Tl/JLCchOL8Iz/2K9pxzlB47Rd8WH5loBNoFqYyUath6fCtQtu\nV7Y+qnLBXKA9hFPzjh8R1N/CnoeQ8PqvmFvKmr12uXAV2AxZqRe+5CixLOKFGv2g\nO+rhstSkgBtpxiXFnzGu+eVKJUxrZKwwb42GMh6Z3DgF9lPXzDDbY+RTmbstZjpa\nZ/zZbzvSs8ludRpdiopixmqkHUpmWNaYOeHJyIBQXMVK2PFh8tvD1LrPA/YfrTGG\nJhEMVuTimMSKlAwC2VHVMtpgevDfTFyxNt1dJ3pAqQKBgQDEV7tCpSjbd7Dt4yRW\nMi8HsQaxLMbjC0eaaYZSlPAUfHxn7hKP4xz5Af692fToUE53/umdPsyw2u84RaL4\nOb2qiCDb2L1zJiFtX6zae9O1b4OdrzxnjUTvnD1OMx+hLpBoyIjtdAfgDkeDH68N\nfoBRIxlo2L6fqHB1igt0hq2B2QKBgQC8IQnE5rIpE4MqFAOJLlIRdz7kUga/cAVP\nI/KZV+yG86+wmrQevydCcJXFChzEW27XQiGysdq4Rnn0Lt5SxiTJgZqq+yNMI0Vx\nEV8DVpeZ3VvzHV6PtjckjlI/RqDMe7vaPS0+f/Dr6gQlfBQ5thJ9KNoY9chL4GJO\nscs5XKc+9wKBgFWkFtApDjs8Z/Y7f1wBo7XtJ4gcidv6zY6yvJ5EzLuC2RjUJVCR\ntc9/aUgSS9sRPEjm7ati+xGhTXr0FPPE68/4dKywS2JwnWABvXnHTT70lyouh2B7\npDgHpE35yrAZiW/LGL7KP60hTVwKc+ak6P97Gdg7wloNtI/wWLLJE+FxAoGAHpPQ\nHqzQcFS3kPNHz9gzhps3Ia0jY6I1erOBDuN3kkexWqcKd6TiIK5j6W7HVjL2RQ5+\no6i8wA7Ua5fiktmZyRbDqN7A0fM5qjMEmmpMobmU5GL1p64aMFrhi19Ta2kBE2u2\nGt54rh+PJPiR4P9y6dzl9gCc2ZhS4i+LtHsWw+kCgYEAlExXhwvtvscp23K2PCYC\nxaer6v1UcXei9Q+I1Tb5+1yIagB/OvIs4CuSOA1NgPjtJKskEozXMRc4XXDoI6Nz\n58IeETDORXgXTUIVQnFSaxbPDR0dhW6T5afnMo2yl0iZclD+iLp35n++5yw/39f5\nzcFQDVVuEQ9ftpBwBPJL4ic=\n-----END PRIVATE KEY-----\n'
+		}),
+
+		databaseURL: `http://${projectId}.firebaseio.com`
+	});
+}
+
+export { firebaseAdmin };
